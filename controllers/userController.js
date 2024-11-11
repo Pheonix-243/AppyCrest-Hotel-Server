@@ -108,15 +108,15 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
     // Check if the user is active
-    // if (!user.isActive) {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "Account is deactivated. Please contact support." });
-    // }
-    // const isMatch = await bcrypt.compare(password, user.password);
-    // if (!isMatch) {
-    //   return res.status(400).json({ message: "Invalid email or password" });
-    // }
+    if (!user.isActive) {
+      return res
+        .status(403)
+        .json({ message: "Account is deactivated. Please contact support." });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
 
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, "ohmyGod", {
